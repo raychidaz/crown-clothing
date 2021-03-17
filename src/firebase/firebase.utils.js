@@ -45,6 +45,22 @@ export const createUserProfileDocument = async (
   return userRef;
 };
 
+// util for adding shop data to firestore
+export const addCollectionsAndDocuments = async (
+  collectionKey,
+  objectsToAdd,
+) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+
+  await batch.commit();
+};
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
